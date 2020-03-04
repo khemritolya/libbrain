@@ -1,12 +1,12 @@
 # libbrain
 
 [![Build Status](https://travis-ci.com/khemritolya/libbrain.svg?branch=master)](https://travis-ci.com/khemritolya/libbrain)
- 
+[![LICENSE](https://img.shields.io/github/license/khemritolya/libbrain)](https://github.com/khemritolya/libbrain/blob/master/LICENSE)
+[![help please](https://img.shields.io/github/labels/khemritolya/libbrain/help%20wanted)]()
+
 A header-only library providing brainfsck/C++ interoperability and compile-time brainfsck compilation and embedding. To use, simply point your compiler to the libbrain.h header, or paste it into your project.
 
 **Author**: Luis Hoderlein
-
-**License:** MIT
 
 ## Quick Start
 
@@ -72,6 +72,6 @@ For now, just look in [libbrain.h]. Pay attention to `op_at<...>`, `scan_forward
 
 libbrain uses c-style IO. Sorry about that. This means that when executing a program, you can specify FILE*s for whatever input and output method you want to use. By default (i.e. when not specified), libbrain runs programs using c stdout and stdin. See the example and test directories if you are particularly curious.
 
-## A Warning:
+## A Warning
 
 libbrain offers no compile time safety  for pointers. If you move the data pointer outside of the range of the tape that you have specified, that is **UNDEFINED BEHAVIOR** and you will suffer the same consequences (e.g. SIGSEGV) that you would in regular C++.
