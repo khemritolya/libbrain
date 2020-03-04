@@ -1,5 +1,5 @@
 #include <cstdio>
-#include "../libbrain.h"
+#include "libbrain.h"
 
 #define LIBBRAIN_ASSERT(a, b) a == b ? printf("=> Passed: " #a " == " #b "\n") : printf("=> Failed: " #a " == " #b "\n");
 
@@ -9,10 +9,11 @@
 void move_value_test() {
     LIBBRAIN_TEST
 
-    auto* data = BRAIN_TAPE_ALLOC(10000);
+    auto* data = BRAIN_ALLOC_TAPE(10000);
     data[0] = 100;
+    data[2] = 76;
 
-    // BF Program which moves the value in one index to one 2 indicies over
+    // BF Program which moves the value in one index to one 2 indicies over, overwriting the thing 2 cells over
     BRAIN_PROGRAM move_program = BRAIN_COMPILE(>>[-]<<[->>+<<]);
     int status_code = move_program.exec(data, 0);
 

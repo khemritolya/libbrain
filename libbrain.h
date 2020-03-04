@@ -342,7 +342,7 @@ constexpr operator""_libbrain_state_literal() { return {}; }
 
 #define BRAIN_PROGRAM libbrain::state
 
-#define BRAIN_TAPE_ALLOC(amount) new unsigned char[amount]()
+#define BRAIN_ALLOC_TAPE(amount) new unsigned char[amount]()
 
 #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 #undef LIBBRAIN_BUILD_WITH_DEBUG

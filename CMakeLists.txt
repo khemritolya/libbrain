@@ -7,10 +7,8 @@ set(CMAKE_CXX_STANDARD 17)
 # These gcc compiler flags are your friend!
 SET(CMAKE_CXX_FLAGS "-g -O2")
 
-add_library(libbrain libbrain.h)
+add_library(libbrain STATIC libbrain.h)
 
 set_target_properties(libbrain PROPERTIES LINKER_LANGUAGE CXX)
-
-set(libbrain_tests Statictest)
-add_executable(libbrain_tests tests/run_tests.cpp)
-target_link_libraries(libbrain_tests libbrain)
+enable_testing()
+add_subdirectory(tests)
