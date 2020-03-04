@@ -1,0 +1,3 @@
+add_executable(libbrain_examples example.cpp)
+target_include_directories(libbrain_examples PUBLIC ..)
+target_link_libraries(libbrain_examples libbrain)

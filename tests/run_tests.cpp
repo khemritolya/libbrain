@@ -5,7 +5,6 @@
 
 #define LIBBRAIN_TEST printf("\n"); printf(__FUNCTION__); printf("\n");
 
-
 void move_value_test() {
     LIBBRAIN_TEST
 
