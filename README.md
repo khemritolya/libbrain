@@ -26,6 +26,8 @@ int main() {
     // identical to `hello_bf.exec(data, 0, stout, stdin);`
     int status_code = hello_bf.exec(data, 0);
     
+    delete[] data;
+    
     return status_code;
 }
 ```
