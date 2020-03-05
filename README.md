@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/khemritolya/libbrain.svg?branch=master)](https://travis-ci.com/khemritolya/libbrain)
 [![LICENSE](https://img.shields.io/github/license/khemritolya/libbrain)](https://github.com/khemritolya/libbrain/blob/master/LICENSE)
-[![help please](https://img.shields.io/github/labels/khemritolya/libbrain/help%20wanted)]()
+[![help please](https://img.shields.io/github/labels/khemritolya/libbrain/help%20wanted)](https://github.com/khemritolya/libbrain)
 
 A header-only library providing brainfsck/C++ interoperability and compile-time brainfsck compilation and embedding. To use, simply point your compiler to the libbrain.h header, or paste it into your project.
 

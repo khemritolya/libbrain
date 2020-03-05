@@ -1,3 +1,11 @@
-add_executable(libbrain_examples example.cpp)
-target_include_directories(libbrain_examples PUBLIC ..)
-target_link_libraries(libbrain_examples libbrain)
+add_executable(libbrain_examples_hello example_hello.cpp)
+target_include_directories(libbrain_examples_hello PUBLIC ..)
+target_link_libraries(libbrain_examples_hello libbrain)
+
+add_executable(libbrain_examples_cat example_cat.cpp)
+target_include_directories(libbrain_examples_cat PUBLIC ..)
+target_link_libraries(libbrain_examples_cat libbrain)
+
+add_executable(libbrain_examples_files example_files.cpp)
+target_include_directories(libbrain_examples_files PUBLIC ..)
+target_link_libraries(libbrain_examples_files libbrain)
