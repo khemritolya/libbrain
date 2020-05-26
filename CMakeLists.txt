@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Note well person reading this:
 # These gcc compiler flags are your friend!
-SET(CMAKE_CXX_FLAGS "-g -O2")
+SET(CMAKE_CXX_FLAGS "-g -O2 -Wall")
 
 add_library(libbrain STATIC libbrain.h)
 

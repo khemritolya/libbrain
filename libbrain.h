@@ -1,10 +1,26 @@
 #ifndef LIBBRAIN_LIBBRAIN_H
 #define LIBBRAIN_LIBBRAIN_H
 
+/*
+ * This flag controls two things
+ *
+ * 1. Helpful little runtime warning messages about what your program is doing
+ * 2. Helpful compiler warnings, which show you a heuristic for how compilation is going
+ *      You may need to enable -Wall or -Wswitch on your gcc version to use this
+ *      Compiling large programs takes a long time (!)
+ */
 #define LIBBRAIN_BUILD_WITH_DEBUG
 #undef LIBBRAIN_BUILD_WITH_DEBUG
 
+#pragma once
+
 namespace libbrain {
+
+    /*
+     * Enum representing all brainfchk operations
+     *
+     * Libbrain states take them as template parameters
+     */
     enum bfop {
         PLUS,
         MINUS,
@@ -18,6 +34,36 @@ namespace libbrain {
         END
     };
 
+    /*
+     * Convert characters into the corresponding bfop
+     * Used from a parameter pack
+     */
+    constexpr bfop from_char(char c) {
+        switch (c) {
+            case '+':
+                return bfop::PLUS;
+            case '-':
+                return bfop::MINUS;
+            case '>':
+                return bfop::DATA_RIGHT;
+            case '<':
+                return bfop::DATA_LEFT;
+            case '.':
+                return bfop::OUT;
+            case ',':
+                return bfop::IN;
+            case '[':
+                return bfop::LOOP_OPEN;
+            case ']':
+                return bfop::LOOP_CLOSE;
+            default:
+                return bfop::NOP;
+        }
+    }
+
+    /*
+     * operation evaluates to the instruction at index ins_ptr in the parameter pack
+     */
     template <unsigned int ins_ptr, bfop op, bfop... ops> struct op_at {
         static_assert(sizeof...(ops) + 1 > ins_ptr);
         static inline constexpr bfop operation = op_at<ins_ptr - 1, ops...>::operation;
@@ -28,6 +74,9 @@ namespace libbrain {
     };
 
 
+    /*
+     * new_ptr evaluates to a pointer to the matching LOOP_CLOSE operation
+     */
     template <unsigned int ptr, unsigned int balance, bfop current, bfop op, bfop... ops>
     struct scan_forward {
         static_assert(sizeof...(ops) + 1 > ptr);
@@ -64,6 +113,9 @@ namespace libbrain {
     };
 
 
+    /*
+     * new_ptr evaluates to a pointer to the matching LOOP_OPEN operation
+     */
     template <unsigned int ptr, unsigned int balance, bfop current, bfop op, bfop... ops>
     struct scan_backward {
         static_assert(sizeof...(ops) + 1 > ptr);
@@ -99,6 +151,34 @@ namespace libbrain {
     };
 
 
+    /*
+     * I want to print at compile time and by God I will print at compile time
+     * check your gcc warning messages for anything matching -Wswitch
+     *
+     * It will now show compilation progress
+     */
+    template<int a, int b>
+    constexpr bool compile_time_print() {
+        enum e1 {dummy=-1};
+        enum e1 ev = dummy;
+        switch (ev) {
+            case a:;
+                break;
+            case b:;
+                break;
+            default:;
+        }
+
+        return true;
+    }
+
+    /*
+     * The Holy Grail of This Project
+     *
+     * Invariant:
+     *
+     * ins_ptr points to
+     */
     template <unsigned int ins_ptr, bfop current, bfop op, bfop... ops>
     struct state {
         static_assert(sizeof...(ops) + 1 > ins_ptr);
@@ -113,6 +193,9 @@ namespace libbrain {
 
     template <unsigned int ins_ptr, bfop op, bfop... ops>
     struct state<ins_ptr, END, op, ops...> {
+#ifdef LIBBRAIN_BUILD_WITH_DEBUG
+        static_assert(compile_time_print<ins_ptr, sizeof...(ops) + 1>());
+#endif
         static constexpr inline int exec(unsigned char data[], unsigned int data_ptr, FILE* output, FILE* input) {
             #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 
@@ -130,6 +213,9 @@ namespace libbrain {
 
     template <unsigned int ins_ptr, bfop op, bfop... ops>
     struct state<ins_ptr, NOP, op, ops...> {
+#ifdef LIBBRAIN_BUILD_WITH_DEBUG
+        static_assert(compile_time_print<ins_ptr, sizeof...(ops) + 1>());
+#endif
         static constexpr inline int exec(unsigned char data[], unsigned int data_ptr, FILE* output, FILE* input) {
             #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 
@@ -148,6 +234,9 @@ namespace libbrain {
 
     template <unsigned int ins_ptr, bfop op, bfop... ops>
     struct state<ins_ptr, PLUS, op, ops...> {
+#ifdef LIBBRAIN_BUILD_WITH_DEBUG
+        static_assert(compile_time_print<ins_ptr, sizeof...(ops) + 1>());
+#endif
         static constexpr inline int exec(unsigned char data[], unsigned int data_ptr, FILE* output, FILE* input) {
             #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 
@@ -167,6 +256,9 @@ namespace libbrain {
 
     template <unsigned int ins_ptr, bfop op, bfop... ops>
     struct state<ins_ptr, MINUS, op, ops...> {
+#ifdef LIBBRAIN_BUILD_WITH_DEBUG
+        static_assert(compile_time_print<ins_ptr, sizeof...(ops) + 1>());
+#endif
         static constexpr inline int exec(unsigned char data[], unsigned int data_ptr, FILE* output, FILE* input) {
             #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 
@@ -186,6 +278,9 @@ namespace libbrain {
 
     template <unsigned int ins_ptr, bfop op, bfop... ops>
     struct state<ins_ptr, DATA_RIGHT, op, ops...> {
+#ifdef LIBBRAIN_BUILD_WITH_DEBUG
+        static_assert(compile_time_print<ins_ptr, sizeof...(ops) + 1>());
+#endif
         static constexpr inline int exec(unsigned char data[], unsigned int data_ptr, FILE* output, FILE* input) {
             #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 
@@ -204,6 +299,9 @@ namespace libbrain {
 
     template <unsigned int ins_ptr, bfop op, bfop... ops>
     struct state<ins_ptr, DATA_LEFT, op, ops...> {
+#ifdef LIBBRAIN_BUILD_WITH_DEBUG
+        static_assert(compile_time_print<ins_ptr, sizeof...(ops) + 1>());
+#endif
         static constexpr inline int exec(unsigned char data[], unsigned int data_ptr, FILE* output, FILE* input) {
             #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 
@@ -222,6 +320,9 @@ namespace libbrain {
 
     template <unsigned int ins_ptr, bfop op, bfop... ops>
     struct state<ins_ptr, IN, op, ops...> {
+#ifdef LIBBRAIN_BUILD_WITH_DEBUG
+        static_assert(compile_time_print<ins_ptr, sizeof...(ops) + 1>());
+#endif
         static constexpr inline int exec(unsigned char data[], unsigned int data_ptr, FILE* output, FILE* input) {
             #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 
@@ -241,6 +342,9 @@ namespace libbrain {
 
     template <unsigned int ins_ptr, bfop op, bfop... ops>
     struct state<ins_ptr, OUT, op, ops...> {
+#ifdef LIBBRAIN_BUILD_WITH_DEBUG
+        static_assert(compile_time_print<ins_ptr, sizeof...(ops) + 1>());
+#endif
         static constexpr inline int exec(unsigned char data[], unsigned int data_ptr, FILE* output, FILE* input) {
             #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 
@@ -260,6 +364,9 @@ namespace libbrain {
 
     template <unsigned int ins_ptr, bfop op, bfop... ops>
     struct state<ins_ptr, LOOP_OPEN, op, ops...> {
+#ifdef LIBBRAIN_BUILD_WITH_DEBUG
+        static_assert(compile_time_print<ins_ptr, sizeof...(ops) + 1>());
+#endif
         static constexpr inline int exec(unsigned char data[], unsigned int data_ptr, FILE* output, FILE* input) {
             #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 
@@ -286,6 +393,9 @@ namespace libbrain {
 
     template <unsigned int ins_ptr, bfop op, bfop... ops>
     struct state<ins_ptr, LOOP_CLOSE, op, ops...> {
+#ifdef LIBBRAIN_BUILD_WITH_DEBUG
+        static_assert(compile_time_print<ins_ptr, sizeof...(ops) + 1>());
+#endif
         static constexpr inline int exec(unsigned char data[], unsigned int data_ptr, FILE* output, FILE* input) {
             #ifdef LIBBRAIN_BUILD_WITH_DEBUG
 
@@ -309,29 +419,6 @@ namespace libbrain {
             return exec(data, data_ptr, stdout, stdin);
         }
     };
-
-    constexpr bfop from_char(char c) {
-        switch (c) {
-            case '+':
-                return bfop::PLUS;
-            case '-':
-                return bfop::MINUS;
-            case '>':
-                return bfop::DATA_RIGHT;
-            case '<':
-                return bfop::DATA_LEFT;
-            case '.':
-                return bfop::OUT;
-            case ',':
-                return bfop::IN;
-            case '[':
-                return bfop::LOOP_OPEN;
-            case ']':
-                return bfop::LOOP_CLOSE;
-            default:
-                return bfop::NOP;
-        }
-    }
 }
 
 template <typename T, T... chars>
@@ -343,9 +430,5 @@ constexpr operator""_libbrain_state_literal() { return {}; }
 #define BRAIN_PROGRAM libbrain::state
 
 #define BRAIN_ALLOC_TAPE(amount) new unsigned char[amount]()
-
-#ifdef LIBBRAIN_BUILD_WITH_DEBUG
-#undef LIBBRAIN_BUILD_WITH_DEBUG
-#endif
 
 #endif
