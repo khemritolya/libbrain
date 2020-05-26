@@ -48,6 +48,19 @@ Note: libbrain currently uses a GCC exclusive feature (though I've heard clang m
 cmake CMakeLists.txt
 cmake  --build .
 ```
+##### Help my brainfsck is not working?
+
+Enable build with debug by commenting the line in `libbrain.h`:
+
+```cpp
+#undef LIBBRAIN_BUILD_WITH_DEBUG
+```
+
+
+##### Help my brainfsck is not compiling?
+
+It takes a bit to compile. Blame the fact that I can't index into a parameter pack in faster than `O(n)`.
+Enabling build with debug gives you a heuristic for how much prograss has been made.
 
 ## The How
 
