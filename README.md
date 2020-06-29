@@ -42,6 +42,8 @@ Note: libbrain currently uses a GCC exclusive feature (though I've heard clang m
 
 ["literal operator template"]: https://en.cppreference.com/w/cpp/language/user_literal
 
+Also, opening [libbrain.h] causes CLion's syntax highlighter to fail due to the complexity of the templates/macros involved. I'm sorry. If you have a fix *please* submit a pull request.
+
 ##### Building tests and examples
 
 ```bash
