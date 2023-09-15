@@ -152,7 +152,7 @@ namespace libbrain {
 
 
     /*
-     * I want to print at compile time and by God I will print at compile time
+     * I want to print at compile time and I will print at compile time
      * check your gcc warning messages for anything matching -Wswitch
      *
      * It will now show compilation progress
@@ -173,8 +173,6 @@ namespace libbrain {
     }
 
     /*
-     * The Holy Grail of This Project
-     *
      * Invariant:
      *
      * indexing into (op, ops...) at index ins_ptr gives current
